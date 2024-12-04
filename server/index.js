@@ -9,14 +9,14 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import fs from "fs";
 import path from "path";
+import * as ENV from "./config.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 //Database connection
-const connectString =
-  "mongodb+srv://jasminetumulak:oman12345@cluster0.lvic91v.mongodb.net/postITDb?retryWrites=true&w=majority&appName=Cluster0";
+const connectString = `mongodb+srv://${ENV.DB_USER}:${ENV.DB_PASSWORD}@${ENV.DB_CLUSTER}/${ENV.DB_NAME}?retryWrites=true&w=majority&appName=${ENV.APP_NAME}`;
 
 mongoose.connect(connectString, {
   useNewUrlParser: true,
@@ -247,6 +247,8 @@ app.put(
   }
 );
 
-app.listen(3001, () => {
-  console.log("You are connected");
+const port = ENV.PORT || 3001;
+
+app.listen(port, () => {
+  console.log(`You are connected at port: ${port}`);
 });
